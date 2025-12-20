@@ -1,0 +1,11 @@
+# Build artifacts
+build/
+cmake-build-*/
+
+# Qt Creator
+*.user
+*.user.*
+
+# OS
+.DS_Store
+
