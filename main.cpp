@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "backend/SystemController.h"
+#include "backend/core/process_model.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,6 +10,7 @@ int main(int argc, char *argv[])
 
     // Register SystemController as a QML type
     qmlRegisterType<SystemController>("CarbonQt", 1, 0, "SystemController");
+    qmlRegisterSingletonInstance("CarbonQt", 1, 0, "ProcessModel", ProcessModel::instance());
 
     QQmlApplicationEngine engine;
 

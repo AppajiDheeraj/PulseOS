@@ -30,6 +30,7 @@ qt_add_qml_module(appCarbonQt
         qml/global/ItemsOriginal.qml
         qml/global/ItemsFooter.qml
         qml/pages/Home.qml
+        qml/pages/Processes.qml
         qml/components/ExitDialog.qml
         qml/window/AboutDialog.qml
     RESOURCES
@@ -46,9 +47,10 @@ qt_add_qml_module(appCarbonQt
         backend/core/cpu_stat.h
         backend/core/memory_stat.h
         backend/core/memory_stat.cpp
+        backend/core/process_model.h
+        backend/core/process_model.cpp
         backend/SystemController.h
         backend/SystemController.cpp
-        QML_FILES qml/pages/Processes.qml
 )
 
 target_link_libraries(appCarbonQt
