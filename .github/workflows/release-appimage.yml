@@ -1,0 +1,53 @@
+name: Build & Release AppImage
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y \
+          qt6-base-dev qt6-declarative-dev \
+          qt6-tools-dev qt6-tools-dev-tools \
+          cmake build-essential \
+          libgl1-mesa-dev fuse
+
+    - name: Configure
+      run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build
+      run: cmake --build build --parallel
+
+    - name: Download linuxdeployqt
+      run: |
+        wget https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
+        chmod +x linuxdeployqt-continuous-x86_64.AppImage
+
+    - name: Create AppImage
+      run: |
+        mkdir -p AppDir/usr/bin
+        cp build/appCarbonQt AppDir/usr/bin/
+        cp appCarbonQt.desktop AppDir/
+        cp CarbonQt.png AppDir/
+
+        ./linuxdeployqt-continuous-x86_64.AppImage \
+          AppDir/appCarbonQt.desktop \
+          -qmldir=qml \
+          -bundle-non-qt-libs \
+          -appimage
+
+    - name: Upload Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: CarbonQt-*.AppImage
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
