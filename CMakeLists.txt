@@ -5,53 +5,45 @@ project(CarbonQt VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Sql)
+find_package(Qt6 REQUIRED COMPONENTS
+    Quick
+    Sql
+    Qml
+    Gui
+    Core
+    ShaderTools
+    Core5Compat
+)
 
 # Disable FluentUI demo/example in PROD
 set(FLUENTUI_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(FLUENTUI_BUILD_DEMO OFF CACHE BOOL "" FORCE)
 
+# FluentUI Pro (must contain CMakeLists.txt)
 add_subdirectory(third_party/FluentUI)
 
-qt_standard_project_setup(REQUIRES 6.5)
-
 # --------------------------------------------------
-# EXECUTABLE (ALL C++ FILES GO HERE)
+# EXECUTABLE
 # --------------------------------------------------
 qt_add_executable(appCarbonQt
     main.cpp
     resources.qrc
 
-    backend/SystemController.h
     backend/SystemController.cpp
-
-    backend/BackendManager.h
     backend/BackendManager.cpp
 
-    backend/core/system_info.h
     backend/core/system_info.cpp
-
-    backend/core/cpu_stat.h
     backend/core/cpu_stat.cpp
-
-    backend/core/memory_stat.h
     backend/core/memory_stat.cpp
-
-    backend/core/process_model.h
     backend/core/process_model.cpp
 
-    backend/utils/proc_reader.h
     backend/utils/proc_reader.cpp
-
-    backend/energy/EnergyEstimator.h
     backend/energy/EnergyEstimator.cpp
-
-    backend/storage/DataLogger.h
     backend/storage/DataLogger.cpp
 )
 
 # --------------------------------------------------
-# QML MODULE (ONLY QML FILES)
+# QML MODULE
 # --------------------------------------------------
 qt_add_qml_module(appCarbonQt
     URI CarbonQt
@@ -65,7 +57,6 @@ qt_add_qml_module(appCarbonQt
         qml/global/GlobalModel.qml
         qml/global/ItemsOriginal.qml
         qml/global/ItemsFooter.qml
-        qml/global/qmldir
 
         qml/pages/Home.qml
         qml/pages/Processes.qml
@@ -78,6 +69,9 @@ target_link_libraries(appCarbonQt
     PRIVATE
         Qt6::Quick
         Qt6::Sql
+        Qt6::Qml
+        Qt6::Gui
+        FluentUI
 )
 
 set_target_properties(appCarbonQt PROPERTIES
