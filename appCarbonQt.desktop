@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=CarbonQt
+Exec=appCarbonQt
+Icon=CarbonQt
+Categories=System;Monitor;
+Terminal=false
